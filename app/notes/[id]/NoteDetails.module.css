@@ -1,0 +1,64 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  color: #226ec5;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.item {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.noteHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  flex: 1;
+}
+
+.tag {
+  background: #226ec5;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-left: 1rem;
+}
+
+.content {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.date {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+} 
