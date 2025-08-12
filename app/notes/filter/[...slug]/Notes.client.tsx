@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchNotes, fetchNoteById, type FetchNotesResponse } from "../../../../lib/api";
+import { fetchNotes, fetchNoteById } from "../../../../lib/api";
 import NoteList from "../../../../components/NoteList/NoteList";
 import SearchBox from "../../../../components/SearchBox/SearchBox";
 import Pagination from "../../../../components/Pagination/Pagination";
 import Modal from "../../../../components/Modal/Modal";
 import NoteForm from "../../../../components/NoteForm/NoteForm";
-import Link from "next/link";
 import styles from "./NotesPage.module.css";
 
 interface NotesClientProps {

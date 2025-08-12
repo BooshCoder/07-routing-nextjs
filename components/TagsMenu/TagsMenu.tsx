@@ -19,7 +19,6 @@ export default function TagsMenu() {
   const pathname = usePathname();
   
   // Використовуємо useEffect для уникнення проблем з гідратацією
-  const [currentTag, setCurrentTag] = useState('All');
   const [currentTagName, setCurrentTagName] = useState('All notes');
   
   React.useEffect(() => {
@@ -29,7 +28,6 @@ export default function TagsMenu() {
     
     const tagName = tags.find(t => t.slug === tag)?.name || 'All notes';
     
-    setCurrentTag(tag);
     setCurrentTagName(tagName);
   }, [pathname]);
 
