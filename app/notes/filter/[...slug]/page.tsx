@@ -1,9 +1,9 @@
 import NotesClient from "./Notes.client";
 
 interface NotesPageProps {
-  params: {
+  params: Promise<{
     slug: string[];
-  };
+  }>;
 }
 
 export default async function NotesPage({ params }: NotesPageProps) {
