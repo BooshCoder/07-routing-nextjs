@@ -1,14 +1,18 @@
-import type { Metadata } from "next";
+import { ReactNode } from 'react';
+import css from '../LayoutNotes.module.css';
 
-export const metadata: Metadata = {
-  title: "Мої нотатки - NoteHub",
-  description: "Переглядайте та створюйте нотатки з можливістю пошуку та категорізації",
-};
+interface NotesLayoutProps {
+  children: ReactNode;
+  sidebar: ReactNode;
+}
 
-export default function NotesLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <>{children}</>;
+export default function NotesLayout({ children, sidebar }: NotesLayoutProps) {
+  return (
+    <div className={css.layout}>
+      {sidebar}
+      <main className={css.main}>
+        {children}
+      </main>
+    </div>
+  );
 } 

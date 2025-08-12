@@ -1,0 +1,58 @@
+.sidebar {
+  width: 200px;
+  padding: 1rem 1.5rem;
+  background-color: #333;
+  color: white;
+  min-height: 100vh;
+  border-right: 1px solid #444;
+}
+
+.menuList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+}
+
+.menuLink {
+  text-decoration: none;
+  color: white;
+  font-size: 0.9rem;
+  display: block;
+  padding: 0.4rem 0.8rem;
+  transition: color 0.3s ease;
+  border-radius: 4px;
+}
+
+.menuLink:hover {
+  color: #ddd;
+}
+
+.menuLink.active {
+  background-color: #555;
+  color: white;
+}
+
+.menuLink.active:hover {
+  color: #ddd;
+}
+
+/* Адаптивність для менших екранів */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+    padding: 0.8rem 1rem;
+  }
+
+  .menuLink {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

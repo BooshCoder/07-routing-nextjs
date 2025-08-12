@@ -9,13 +9,16 @@ export interface FetchNotesResponse {
 export const fetchNotes = async (
   page: number = 1,
   perPage: number = 12,
-  search: string = ""
+  search: string = "",
+  tag?: string
 ): Promise<FetchNotesResponse> => {
   const params = new URLSearchParams({
     page: String(page),
     perPage: String(perPage),
   });
   if (search) params.append("search", search);
+  if (tag && tag !== 'All') params.append("tag", tag);
+  
   const { data } = await axios.get<FetchNotesResponse>(
     `https://notehub-public.goit.study/api/notes?${params.toString()}`,
     {

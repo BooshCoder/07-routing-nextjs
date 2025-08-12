@@ -11,9 +11,10 @@ interface NoteListProps {
   notes: Note[];
   isLoading: boolean;
   isError: boolean;
+  onViewNote?: (noteId: string) => void;
 }
 
-const NoteList: React.FC<NoteListProps> = ({ notes, isLoading, isError }) => {
+const NoteList: React.FC<NoteListProps> = ({ notes, isLoading, isError, onViewNote }) => {
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: deleteNote,
@@ -36,9 +37,18 @@ const NoteList: React.FC<NoteListProps> = ({ notes, isLoading, isError }) => {
           </Link>
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
-            <Link href={`/notes/${note.id}`} className={css.viewButton}>
-              View details
-            </Link>
+            {onViewNote ? (
+              <button 
+                className={css.viewButton}
+                onClick={() => onViewNote(note.id)}
+              >
+                View details
+              </button>
+            ) : (
+              <Link href={`/notes/${note.id}`} className={css.viewButton}>
+                View details
+              </Link>
+            )}
             <button
               className={css.button}
               onClick={() => deleteMutation.mutate(note.id)}
