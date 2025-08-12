@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import css from './SidebarNotes.module.css';
@@ -16,13 +16,16 @@ const tags = [
 
 export default function SidebarNotes() {
   const pathname = usePathname();
-  const [currentTag, setCurrentTag] = useState('All');
+  const [currentTagName, setCurrentTagName] = useState('All notes');
   
-  useEffect(() => {
+  React.useEffect(() => {
     const tag = pathname.includes('/notes/filter/') 
       ? pathname.split('/notes/filter/')[1] 
       : 'All';
-    setCurrentTag(tag);
+    
+    const tagName = tags.find(t => t.slug === tag)?.name || 'All notes';
+    
+    setCurrentTagName(tagName);
   }, [pathname]);
 
   return (
@@ -32,7 +35,7 @@ export default function SidebarNotes() {
           <li key={tag.slug} className={css.menuItem}>
             <Link 
               href={`/notes/filter/${tag.slug}`} 
-              className={`${css.menuLink} ${currentTag === tag.slug ? css.active : ''}`}
+              className={`${css.menuLink} ${currentTagName === tag.name ? css.active : ''}`}
             >
               {tag.name}
             </Link>
