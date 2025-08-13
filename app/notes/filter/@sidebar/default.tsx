@@ -1,8 +1,6 @@
-"use client";
-
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { headers } from 'next/headers';
 import css from './SidebarNotes.module.css';
 
 const tags = [
@@ -15,18 +13,13 @@ const tags = [
 ];
 
 export default function SidebarNotes() {
-  const pathname = usePathname();
-  const [currentTagName, setCurrentTagName] = useState('All notes');
+  const headersList = headers();
+  const pathname = headersList.get('x-pathname') || headersList.get('x-invoke-path') || '';
   
-  React.useEffect(() => {
-    const tag = pathname.includes('/notes/filter/') 
-      ? pathname.split('/notes/filter/')[1] 
-      : 'All';
-    
-    const tagName = tags.find(t => t.slug === tag)?.name || 'All notes';
-    
-    setCurrentTagName(tagName);
-  }, [pathname]);
+  // Визначаємо активний тег на основі поточного шляху
+  const currentTag = pathname.includes('/notes/filter/') 
+    ? pathname.split('/notes/filter/')[1] 
+    : 'All';
 
   return (
     <aside className={css.sidebar}>
@@ -35,7 +28,7 @@ export default function SidebarNotes() {
           <li key={tag.slug} className={css.menuItem}>
             <Link 
               href={`/notes/filter/${tag.slug}`} 
-              className={`${css.menuLink} ${currentTagName === tag.name ? css.active : ''}`}
+              className={`${css.menuLink} ${currentTag === tag.slug ? css.active : ''}`}
             >
               {tag.name}
             </Link>

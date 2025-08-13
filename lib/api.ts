@@ -6,6 +6,31 @@ export interface FetchNotesResponse {
   totalPages: number;
 }
 
+// Серверна версія для використання в серверних компонентах
+export const fetchNotesServer = async (
+  page: number = 1,
+  perPage: number = 12,
+  search: string = "",
+  tag?: string
+): Promise<FetchNotesResponse> => {
+  const params = new URLSearchParams({
+    page: String(page),
+    perPage: String(perPage),
+  });
+  if (search) params.append("search", search);
+  if (tag && tag !== 'All') params.append("tag", tag);
+  
+  const { data } = await axios.get<FetchNotesResponse>(
+    `https://notehub-public.goit.study/api/notes?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
+      },
+    }
+  );
+  return data;
+};
+
 export const fetchNotes = async (
   page: number = 1,
   perPage: number = 12,

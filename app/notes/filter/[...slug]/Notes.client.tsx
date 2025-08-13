@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchNotes, fetchNoteById } from "../../../../lib/api";
+import { fetchNotes, fetchNoteById, FetchNotesResponse } from "../../../../lib/api";
 import NoteList from "../../../../components/NoteList/NoteList";
 import SearchBox from "../../../../components/SearchBox/SearchBox";
 import Pagination from "../../../../components/Pagination/Pagination";
@@ -12,9 +12,10 @@ import styles from "./NotesPage.module.css";
 
 interface NotesClientProps {
   tag: string;
+  initialData: FetchNotesResponse;
 }
 
-export default function NotesClient({ tag }: NotesClientProps) {
+export default function NotesClient({ tag, initialData }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -36,6 +37,8 @@ export default function NotesClient({ tag }: NotesClientProps) {
     queryFn: () => fetchNotes(page, 12, debouncedSearch, tag === "All" ? undefined : tag),
     retry: 3,
     retryDelay: 1000,
+    initialData: page === 1 && !debouncedSearch ? initialData : undefined,
+    placeholderData: (previousData) => previousData,
   });
 
   const { data: selectedNote, isLoading: isNoteLoading } = useQuery({
