@@ -12,8 +12,8 @@ const tags = [
   { name: 'Shopping', slug: 'Shopping' },
 ];
 
-export default function SidebarNotes() {
-  const headersList = headers();
+export default async function SidebarNotes() {
+  const headersList = await headers();
   const pathname = headersList.get('x-pathname') || headersList.get('x-invoke-path') || '';
   
   // Визначаємо активний тег на основі поточного шляху
