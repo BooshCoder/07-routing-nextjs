@@ -9,8 +9,8 @@ import EmptyState from "../EmptyState/EmptyState";
 
 interface NoteListProps {
   notes: Note[];
-  isLoading: boolean;
-  isError: boolean;
+  isLoading?: boolean;
+  isError?: boolean;
   onViewNote?: (noteId: string) => void;
 }
 

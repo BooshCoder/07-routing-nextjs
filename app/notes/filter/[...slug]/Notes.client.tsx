@@ -45,7 +45,7 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
     placeholderData: (previousData) => previousData,
   });
 
-  const handleCreateSuccess = () => {
+  const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
@@ -53,13 +53,11 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
     <div className={styles.container}>
       <header className={styles.header}>
         <SearchBox value={search} onChange={handleSearch} />
-        {data && data.totalPages > 1 && (
-          <Pagination
-            page={page}
-            setPage={setPage}
-            pageCount={data.totalPages}
-          />
-        )}
+        <Pagination
+          page={page}
+          setPage={setPage}
+          pageCount={data?.totalPages || 1}
+        />
         <button
           className={styles.createButton}
           onClick={() => setIsModalOpen(true)}
@@ -81,18 +79,14 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
       )}
 
       {!isLoading && !isError && data && (
-        <NoteList 
-          notes={data.notes || []} 
-          isLoading={false}
-          isError={false}
-        />
+        <NoteList notes={data.notes || []} />
       )}
 
       {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
+        <Modal onClose={handleCloseModal}>
           <NoteForm
-            onSuccess={handleCreateSuccess}
-            onCancel={() => setIsModalOpen(false)}
+            onSuccess={handleCloseModal}
+            onCancel={handleCloseModal}
           />
         </Modal>
       )}
