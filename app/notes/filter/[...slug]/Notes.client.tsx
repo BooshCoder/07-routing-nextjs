@@ -21,11 +21,16 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Скидаємо сторінку одразу при зміні пошуку
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    setPage(1); // Скидаємо на першу сторінку одразу
+  };
+
   // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1); // Скидаємо на першу сторінку при пошуку
     }, 500);
 
     return () => clearTimeout(timer);
@@ -39,10 +44,6 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
     initialData: initialData,
     placeholderData: (previousData) => previousData,
   });
-
-  const handleSearch = (value: string) => {
-    setSearch(value);
-  };
 
   const handleCreateSuccess = () => {
     setIsModalOpen(false);
@@ -80,8 +81,8 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
       )}
 
       {!isLoading && !isError && data && (
-        <NoteList
-          notes={data.notes || []}
+        <NoteList 
+          notes={data.notes || []} 
           isLoading={false}
           isError={false}
         />
