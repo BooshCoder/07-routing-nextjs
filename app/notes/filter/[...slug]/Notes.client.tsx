@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchNotes, fetchNoteById, FetchNotesResponse } from "../../../../lib/api";
+import { fetchNotes, FetchNotesResponse } from "../../../../lib/api";
 import NoteList from "../../../../components/NoteList/NoteList";
 import SearchBox from "../../../../components/SearchBox/SearchBox";
 import Pagination from "../../../../components/Pagination/Pagination";
@@ -20,7 +20,6 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
 
   // Debounce search
   useEffect(() => {
@@ -37,14 +36,8 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
     queryFn: () => fetchNotes(page, 12, debouncedSearch, tag === "All" ? undefined : tag),
     retry: 3,
     retryDelay: 1000,
-    initialData: page === 1 && !debouncedSearch ? initialData : undefined,
+    initialData: initialData,
     placeholderData: (previousData) => previousData,
-  });
-
-  const { data: selectedNote, isLoading: isNoteLoading } = useQuery({
-    queryKey: ["note", selectedNoteId],
-    queryFn: () => fetchNoteById(selectedNoteId!),
-    enabled: !!selectedNoteId,
   });
 
   const handleSearch = (value: string) => {
@@ -54,16 +47,6 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
   const handleCreateSuccess = () => {
     setIsModalOpen(false);
   };
-
-  const handleViewNote = (noteId: string) => {
-    setSelectedNoteId(noteId);
-  };
-
-  const handleCloseNoteModal = () => {
-    setSelectedNoteId(null);
-  };
-
-
 
   return (
     <div className={styles.container}>
@@ -101,7 +84,6 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
           notes={data.notes || []}
           isLoading={false}
           isError={false}
-          onViewNote={handleViewNote}
         />
       )}
 
@@ -111,41 +93,6 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
             onSuccess={handleCreateSuccess}
             onCancel={() => setIsModalOpen(false)}
           />
-        </Modal>
-      )}
-
-      {selectedNoteId && (
-        <Modal onClose={handleCloseNoteModal}>
-          {isNoteLoading ? (
-            <div className={styles.loading}>
-              <p>Завантаження нотатки...</p>
-            </div>
-          ) : selectedNote ? (
-            <div className={styles.preview}>
-              <header className={styles.previewHeader}>
-                <h2 className={styles.previewTitle}>{selectedNote.title}</h2>
-                <span className={styles.previewTag}>{selectedNote.tag}</span>
-              </header>
-              
-              <div className={styles.previewContent}>
-                <p>{selectedNote.content}</p>
-              </div>
-              
-              <footer className={styles.previewFooter}>
-                <div className={styles.previewMeta}>
-                  <span>Створено: {new Date(selectedNote.createdAt).toLocaleDateString()}</span>
-                  {selectedNote.updatedAt !== selectedNote.createdAt && (
-                    <span>Оновлено: {new Date(selectedNote.updatedAt).toLocaleDateString()}</span>
-                  )}
-                </div>
-              </footer>
-            </div>
-          ) : (
-            <div className={styles.error}>
-              <h2>Помилка</h2>
-              <p>Не вдалося завантажити нотатку</p>
-            </div>
-          )}
         </Modal>
       )}
     </div>
